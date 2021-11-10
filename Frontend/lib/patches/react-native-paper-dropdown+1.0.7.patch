@@ -1,0 +1,25 @@
+diff --git a/node_modules/react-native-paper-dropdown/dist/DropDown.js b/node_modules/react-native-paper-dropdown/dist/DropDown.js
+index 19bca20..8d059ee 100644
+--- a/node_modules/react-native-paper-dropdown/dist/DropDown.js
++++ b/node_modules/react-native-paper-dropdown/dist/DropDown.js
+@@ -54,7 +54,7 @@ const DropDown = forwardRef((props, ref) => {
+     }, [value]);
+     return (<Menu visible={visible} onDismiss={onDismiss} theme={theme} anchor={<TouchableRipple ref={ref} onPress={showDropDown} onLayout={onLayout} accessibilityLabel={accessibilityLabel}>
+             <View pointerEvents={"none"}>
+-              <TextInput value={displayValue} mode={mode} label={label} placeholder={placeholder} pointerEvents={"none"} theme={theme} right={<TextInput.Icon name={visible ? "menu-up" : "menu-down"}/>} {...inputProps}/>
++              <TextInput value={displayValue} mode={mode} label={label} placeholder={placeholder} pointerEvents={"none"} theme={theme} right={<TextInput.Icon name={visible ? "menu-up" : "menu-down"} color={inputProps.disabled ? (theme || activeTheme).colors.placeholder : (theme || activeTheme).colors.text}/>} {...inputProps}/>
+             </View>
+           </TouchableRipple>} style={{
+             maxWidth: inputLayout?.width,
+@@ -95,6 +95,11 @@ const DropDown = forwardRef((props, ref) => {
+                 ...(isActive(_item.value)
+                     ? dropDownItemSelectedStyle
+                     : dropDownItemStyle),
++            }} onPress={() => {
++                setActive(_item.value);
++                if (onDismiss) {
++                    onDismiss();
++                }
+             }}/>
+                   {multiSelect && (<Checkbox.Android theme={{
+                     colors: { accent: activeTheme?.colors.primary },
