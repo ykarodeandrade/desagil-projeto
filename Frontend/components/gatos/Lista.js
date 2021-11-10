@@ -76,7 +76,7 @@ export default function Lista(props) {
             <FAB style={styles.fab} icon="plus" onPress={() => navigate('Ficha', null)} />
             {!response.running && !response.success && (
                 <Snackbar visible={getError} action={{ label: 'Ok', onPress: () => setGetError(false) }} onDismiss={() => { }}>
-                    {response.body.status > 0 && `ERROR ${response.body.status}: `}{response.body.message}
+                    {response.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${response.body.status}: ${response.body.message}`}
                 </Snackbar>
             )}
         </>
