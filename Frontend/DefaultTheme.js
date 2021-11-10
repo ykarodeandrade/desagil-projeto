@@ -7,16 +7,25 @@ export default {
         primary: '#6200ee',
         accent: '#03dac4',
         background: '#f6f6f6',
-        card: 'rgb(255, 255, 255)',
         surface: '#ffffff',
-        error: '#b00020',
+        card: 'rgb(255, 255, 255)',
+        error: '#B00020',
         text: '#000000',
-        border: 'rgb(216, 216, 216)',
-        onSurface: '#000000',
         disabled: 'rgba(0, 0, 0, 0.26)',
         placeholder: 'rgba(0, 0, 0, 0.54)',
+        border: 'rgb(216, 216, 216)',
         backdrop: 'rgba(0, 0, 0, 0.5)',
+        onSurface: '#000000',
         notification: '#f50057',
+    },
+    screenOptions: {
+        headerStyle: {
+            backgroundColor: '#6200ee',
+        },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: {
+            color: '#ffffff',
+        },
     },
     fonts: Platform.select({
         web: {
@@ -76,14 +85,5 @@ export default {
     }),
     animation: {
         scale: 1.0,
-    },
-    screenOptions: {
-        headerStyle: {
-            backgroundColor: '#6200ee',
-        },
-        headerTintColor: '#ffffff',
-        headerTitleStyle: {
-            color: '#ffffff',
-        },
     },
 };
