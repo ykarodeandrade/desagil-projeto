@@ -1,0 +1,32 @@
+container {
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 5px;
+}
+
+cell {
+    width: 50%;
+}
+
+card {
+    margin: 5px;
+}
+
+cover {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+center {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+fab {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}

@@ -1,0 +1,36 @@
+container {
+    flex-grow: 1;
+    padding: 5px;
+}
+
+photoAspect {
+    align-self: center;
+    width: 50%;
+    margin: 5px;
+}
+
+photoInput {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+grow {
+    flex-grow: 1;
+}
+
+input {
+    margin: 5px;
+}
+
+buttons {
+    flex-direction: row;
+}
+
+button {
+    flex-grow: 1;
+    margin: 5px;
+}
+
+error {
+    margin: 0 5px 5px 5px;
+}
