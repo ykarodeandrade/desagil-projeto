@@ -152,12 +152,12 @@ export default function Ficha(props) {
             )}
             {!registerResponse.running && !registerResponse.success && (
                 <Snackbar visible={registerError} action={{ label: 'Ok', onPress: () => setRegisterError(false) }} onDismiss={() => { }}>
-                    {registerResponse.body.status > 0 && `ERROR ${registerResponse.body.status}: `}{registerResponse.body.message}
+                    {registerResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${registerResponse.body.status}: ${registerResponse.body.message}`}
                 </Snackbar>
             )}
             {!removeResponse.running && !removeResponse.success && (
                 <Snackbar visible={removeError} action={{ label: 'Ok', onPress: () => setRemoveError(false) }} onDismiss={() => { }}>
-                    {removeResponse.body.status > 0 && `ERROR ${removeResponse.body.status}: `}{removeResponse.body.message}
+                    {removeResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
                 </Snackbar>
             )}
         </>
