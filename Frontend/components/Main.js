@@ -18,8 +18,8 @@ export default function Main(props) {
 
     return (
         <Tab.Navigator initialRouteName="Gatos" screenOptions={theme.screenOptions}>
-            <Tab.Screen name="Gatos" component={Gatos} options={{ tabBarIcon: ({ color }) => <Icon style={styles.icon} name="cat" color={color} /> }} />
-            <Tab.Screen name="Doadores" component={Doadores} options={{ tabBarIcon: ({ color }) => <Icon style={styles.icon} name="charity" color={color} /> }} />
+            <Tab.Screen name="Gatos" component={Gatos} options={{ tabBarIcon: ({ color }) => <Icon name="cat" color={color} /> }} />
+            <Tab.Screen name="Doadores" component={Doadores} options={{ tabBarIcon: ({ color }) => <Icon name="charity" color={color} /> }} />
         </Tab.Navigator>
     );
 }
