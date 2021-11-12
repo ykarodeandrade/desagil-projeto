@@ -13,6 +13,10 @@ photoInner {
     margin: 5px;
 }
 
+photo {
+    flex-grow: 1;
+}
+
 input {
     margin: 5px;
 }

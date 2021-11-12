@@ -114,7 +114,7 @@ export default function Ficha(props) {
                                 {file.uri === null ? (
                                     <Icon name="file-image" />
                                 ) : (
-                                    <Image source={{ uri: file.uri }} resizeMode="stretch" />
+                                    <Image style={styles.photo} source={{ uri: file.uri }} resizeMode="stretch" />
                                 )}
                             </TouchableRipple>
                         )}
