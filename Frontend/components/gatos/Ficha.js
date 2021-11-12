@@ -4,9 +4,9 @@ import { ScrollView, Image, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ActivityIndicator, TouchableRipple, TextInput, HelperText, Button, Snackbar } from 'react-native-paper';
+import { ActivityIndicator, TouchableRipple, TextInput, HelperText, Button, Snackbar, Text } from 'react-native-paper';
 
-import { AspectView, Icon, DropDown, DateTimePicker, useEmit, useEffect, useStorage, useRequest } from '../../lib';
+import { AspectView, Icon, DropDown, DateTimePicker, Modal, useEmit, useEffect, useStorage, useRequest } from '../../lib';
 
 import settings from '../../settings.json';
 
@@ -27,6 +27,7 @@ export default function Ficha(props) {
     const [rescueDate, setRescueDate] = useState(gato ? new Date(gato.dataResgate) : new Date());
     const [registerError, setRegisterError] = useState(false);
     const [removeError, setRemoveError] = useState(false);
+    const [removeVisible, setRemoveVisible] = useState(false);
 
     const emit = useEmit('updated-cats');
 
@@ -69,7 +70,12 @@ export default function Ficha(props) {
         }
     }
 
-    function onPressRemove() {
+    function onDismissRemove() {
+        setRemoveVisible(false);
+    }
+
+    function onConfirmRemove() {
+        onDismissRemove();
         setRemoveError(true);
         del(`/gato?key=${gato.key}`);
     }
@@ -135,7 +141,7 @@ export default function Ficha(props) {
                             {gato ? 'Atualizar' : 'Cadastrar'}
                         </Button>
                         {gato && (
-                            <Button style={styles.button} mode="outlined" disabled={registerResponse.running || removeResponse.running} loading={removeResponse.running} onPress={onPressRemove}>
+                            <Button style={styles.button} mode="outlined" disabled={registerResponse.running || removeResponse.running} loading={removeResponse.running} onPress={() => setRemoveVisible(true)}>
                                 Remover
                             </Button>
                         )}
@@ -157,6 +163,21 @@ export default function Ficha(props) {
                     {removeResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
                 </Snackbar>
             )}
+            <Modal style={styles.modal} visible={removeVisible} onDismiss={onDismissRemove}>
+                <View>
+                    <Text style={styles.question}>
+                        Remover{gato ? ` ${gato.nome}` : ''}?
+                    </Text>
+                    <View style={styles.buttonContainer}>
+                        <Button style={styles.button} onPress={onDismissRemove}>
+                            Cancelar
+                        </Button>
+                        <Button style={styles.button} onPress={onConfirmRemove}>
+                            Confirmar
+                        </Button>
+                    </View>
+                </View>
+            </Modal>
         </>
     );
 }
