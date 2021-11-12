@@ -4,9 +4,9 @@ import { ScrollView, Image, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ActivityIndicator, TouchableRipple, TextInput, HelperText, Button, Snackbar, Text } from 'react-native-paper';
+import { ActivityIndicator, TouchableRipple, TextInput, HelperText, Button, Snackbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 
-import { AspectView, Icon, DropDown, DateTimePicker, Modal, useEmit, useEffect, useStorage, useRequest } from '../../lib';
+import { AspectView, Icon, DropDown, DateTimePicker, useEmit, useEffect, useStorage, useRequest } from '../../lib';
 
 import settings from '../../settings.json';
 
@@ -112,9 +112,9 @@ export default function Ficha(props) {
                         ) : (
                             <TouchableRipple style={styles.photoInner} onPress={onPressPhoto}>
                                 {file.uri === null ? (
-                                    <Icon style={styles.photo} name="file-image" />
+                                    <Icon name="file-image" />
                                 ) : (
-                                    <Image style={styles.photo} source={{ uri: file.uri }} resizeMode="stretch" />
+                                    <Image source={{ uri: file.uri }} resizeMode="stretch" />
                                 )}
                             </TouchableRipple>
                         )}
@@ -163,21 +163,28 @@ export default function Ficha(props) {
                     {removeResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
                 </Snackbar>
             )}
-            <Modal style={styles.modal} visible={removeVisible} onDismiss={onDismissRemove}>
-                <View>
-                    <Text style={styles.question}>
-                        Remover{gato ? ` ${gato.nome}` : ''}?
-                    </Text>
-                    <View style={styles.buttonContainer}>
-                        <Button style={styles.button} onPress={onDismissRemove}>
-                            Cancelar
-                        </Button>
-                        <Button style={styles.button} onPress={onConfirmRemove}>
-                            Confirmar
-                        </Button>
+            <Portal>
+                <Dialog style={styles.modal} visible={removeVisible} onDismiss={onDismissRemove}>
+                    <View>
+                        <Dialog.Title>
+                            Remover{gato ? ` ${gato.nome}` : ''}?
+                        </Dialog.Title>
+                        <Dialog.Content>
+                            <Paragraph>
+                                Esta operação não pode ser desfeita.
+                            </Paragraph>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <Button onPress={onDismissRemove}>
+                                Cancelar
+                            </Button>
+                            <Button onPress={onConfirmRemove}>
+                                Ok
+                            </Button>
+                        </Dialog.Actions>
                     </View>
-                </View>
-            </Modal>
+                </Dialog>
+            </Portal>
         </>
     );
 }
