@@ -8,7 +8,7 @@ export default function AspectView(props) {
     const [height, setHeight] = useState(0);
 
     const onLayout = useCallback((event) => {
-        if ('onLayout' in props) {
+        if (props.onLayout) {
             props.onLayout(event);
         }
         setHeight(event.nativeEvent.layout.width / ratio);

@@ -1,14 +1,23 @@
 // NÃO MODIFIQUE NEM SUBSTITUA ESTE ARQUIVO
 
+import merge from 'deepmerge';
+
 import React, { useState, useCallback } from 'react';
+
+import { useTheme } from 'react-native-paper';
 
 import IconCore from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Icon(props) {
+    let theme = useTheme();
+    if (props.theme) {
+        theme = merge(theme, props.theme);
+    }
+
     const [size, setSize] = useState(0);
 
     const onLayout = useCallback((event) => {
-        if ('onLayout' in props) {
+        if (props.onLayout) {
             props.onLayout(event);
         }
         const width = event.nativeEvent.layout.width;
@@ -24,15 +33,15 @@ export default function Icon(props) {
 
     return (
         <IconCore
+            color={theme.colors.text}
             {...props}
             style={{
-                flexGrow: 1,
-                alignSelf: 'stretch',
                 margin: 0,
+                padding: 0,
                 ...props.style,
             }}
-            size={size}
             onLayout={onLayout}
+            size={size}
         />
     );
 }
