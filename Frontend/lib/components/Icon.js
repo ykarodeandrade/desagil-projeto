@@ -36,6 +36,7 @@ export default function Icon(props) {
             color={theme.colors.text}
             {...props}
             style={{
+                flexGrow: 1,
                 margin: 0,
                 padding: 0,
                 ...props.style,
