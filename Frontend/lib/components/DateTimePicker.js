@@ -6,9 +6,11 @@ import React, { useRef, useState } from 'react';
 
 import { Platform, I18nManager } from 'react-native';
 
-import { TextInput, TouchableRipple, Portal, Modal, Button, useTheme } from 'react-native-paper';
+import { TextInput, TouchableRipple, Button, useTheme } from 'react-native-paper';
 
 import DateTimePickerCore from '@react-native-community/datetimepicker';
+
+import Modal from './Modal';
 
 export default function DateTimePicker(props) {
     let theme = useTheme();
@@ -241,37 +243,32 @@ export default function DateTimePicker(props) {
                 />
             </TouchableRipple>
             {Platform.OS === 'ios' ? (
-                <Portal
+                <Modal
                     theme={props.theme}
+                    style={{
+                        padding: 6,
+                    }}
+                    visible={mobileOpen}
+                    onDismiss={mobileOnDismiss}
                 >
-                    <Modal
-                        contentContainerStyle={{
-                            alignSelf: 'center',
-                            padding: 6,
-                            backgroundColor: theme.colors.background,
+                    <DateTimePickerCore
+                        style={{
+                            margin: 6,
                         }}
-                        onDismiss={mobileOnDismiss}
-                        visible={mobileOpen}
+                        mode={props.type}
+                        value={iosValue}
+                        onChange={iosOnChange}
+                    />
+                    <Button
+                        theme={props.theme}
+                        style={{
+                            margin: 6,
+                        }}
+                        onPress={iosOnPress}
                     >
-                        <DateTimePickerCore
-                            style={{
-                                margin: 6,
-                            }}
-                            mode={props.type}
-                            value={iosValue}
-                            onChange={iosOnChange}
-                        />
-                        <Button
-                            theme={props.theme}
-                            style={{
-                                margin: 6,
-                            }}
-                            onPress={iosOnPress}
-                        >
-                            Ok
-                        </Button>
-                    </Modal>
-                </Portal>
+                        Ok
+                    </Button>
+                </Modal>
             ) : (
                 mobileOpen && (
                     <DateTimePickerCore
