@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActivityIndicator, TouchableRipple, TextInput, HelperText, Button, Snackbar } from 'react-native-paper';
 
-import { Icon, InputView, AspectView, DropDown, DateTimePicker, useEmit, useStorage, useRequest } from '../../lib';
+import { Icon, AspectView, DropDown, DateTimePicker, useEmit, useStorage, useRequest } from '../../lib';
 
 import settings from '../../settings.json';
 
@@ -102,19 +102,17 @@ export default function Ficha(props) {
             <ScrollView>
                 <SafeAreaView style={styles.container} edges={['right', 'bottom', 'left']}>
                     <AspectView style={styles.photoAspect}>
-                        <InputView style={styles.photoInput}>
-                            {file.loading ? (
-                                <ActivityIndicator style={styles.grow} size="large" />
-                            ) : (
-                                <TouchableRipple style={styles.grow} onPress={onPressPhoto}>
-                                    {file.uri === null ? (
-                                        <Icon style={styles.grow} name="file-image" />
-                                    ) : (
-                                        <Image style={styles.grow} source={{ uri: file.uri }} resizeMode="stretch" />
-                                    )}
-                                </TouchableRipple>
-                            )}
-                        </InputView>
+                        {file.loading ? (
+                            <ActivityIndicator style={styles.grow} size="large" />
+                        ) : (
+                            <TouchableRipple style={styles.grow} onPress={onPressPhoto}>
+                                {file.uri === null ? (
+                                    <Icon style={styles.grow} name="file-image" />
+                                ) : (
+                                    <Image style={styles.grow} source={{ uri: file.uri }} resizeMode="stretch" />
+                                )}
+                            </TouchableRipple>
+                        )}
                     </AspectView>
                     <TextInput style={styles.input} label="Nome" value={name} error={nameError} onChangeText={setName} />
                     {nameError && (
