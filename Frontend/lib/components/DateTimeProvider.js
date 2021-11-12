@@ -13,12 +13,12 @@ export default function DateTimeProvider(props) {
         <>
             {Platform.OS === 'web' && theme.dark && (
                 <style>
-                    {
-                        `::-webkit-calendar-picker-indicator,
-                         ::-webkit-time-picker-indicator {
-                             filter: invert(1);
-                         }`
-                    }
+                    {`
+                        ::-webkit-calendar-picker-indicator,
+                        ::-webkit-time-picker-indicator {
+                            filter: invert(1);
+                        }
+                    `}
                 </style>
             )}
             {props.children}

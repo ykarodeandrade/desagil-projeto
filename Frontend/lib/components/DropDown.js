@@ -25,8 +25,9 @@ export default function DropDown(props) {
                 paddingRight: 0,
                 paddingBottom: 0,
                 paddingLeft: 0,
+                backgroundColor: 'transparent',
             }}
-            pointerEvents={props.disabled ? 'none' : undefined}
+            pointerEvents={props.disabled ? 'none' : props.pointerEvents}
         >
             <DropDownCore
                 visible={open}
@@ -48,14 +49,20 @@ export default function DropDown(props) {
                         marginBottom: 0,
                         marginLeft: 0,
                     },
+                    left: false,
                     disabled: props.disabled,
                     error: props.error,
+                    onChangeText: false,
                     selectionColor: props.selectionColor,
                     underlineColor: props.underlineColor,
                     activeUnderlineColor: props.activeUnderlineColor,
                     outlineColor: props.outlineColor,
                     activeOutlineColor: props.activeOutlineColor,
                     dense: props.dense,
+                    multiline: false,
+                    numberOfLines: 1,
+                    onFocus: false,
+                    onBlur: false,
                     editable: false,
                 }}
                 list={props.list}
