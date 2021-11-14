@@ -2,34 +2,28 @@
 
 import merge from 'deepmerge';
 
-import React, { useState, useCallback } from 'react';
-
-import { useTheme } from 'react-native-paper';
+import React, { useState } from 'react';
 
 import IconCore from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useTheme } from 'react-native-paper';
+
 export default function Icon(props) {
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
+
     let theme = useTheme();
     if (props.theme) {
         theme = merge(theme, props.theme);
     }
 
-    const [size, setSize] = useState(0);
-
-    const onLayout = useCallback((event) => {
+    function onLayout({ nativeEvent }) {
+        setWidth(nativeEvent.layout.width);
+        setHeight(nativeEvent.layout.height);
         if (props.onLayout) {
-            props.onLayout(event);
+            props.onLayout({ nativeEvent });
         }
-        const width = event.nativeEvent.layout.width;
-        const height = event.nativeEvent.layout.height;
-        if (width === 0) {
-            setSize(height);
-        } else if (height === 0) {
-            setSize(width);
-        } else {
-            setSize(Math.min(width, height));
-        }
-    }, []);
+    }
 
     return (
         <IconCore
@@ -37,12 +31,11 @@ export default function Icon(props) {
             {...props}
             style={{
                 flexGrow: 1,
-                margin: 0,
-                padding: 0,
+                alignSelf: 'stretch',
                 ...props.style,
             }}
             onLayout={onLayout}
-            size={size}
+            size={Math.min(width, height)}
         />
     );
 }

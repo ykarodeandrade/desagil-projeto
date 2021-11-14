@@ -18,14 +18,14 @@ import AppLoading from 'expo-app-loading';
 
 import { DateTimeProvider, createGlobals } from './lib';
 
-import settings from './settings.json';
+import Main from './components/Main';
 
 import GoogleFonts from './GoogleFonts';
 
 import CustomDefaultTheme from './DefaultTheme';
 import CustomDarkTheme from './DarkTheme';
 
-import Main from './components/Main';
+import settings from './settings.json';
 
 const entries = [];
 

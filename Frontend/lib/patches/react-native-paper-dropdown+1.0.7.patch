@@ -1,13 +1,17 @@
 diff --git a/node_modules/react-native-paper-dropdown/dist/DropDown.js b/node_modules/react-native-paper-dropdown/dist/DropDown.js
-index 19bca20..8d059ee 100644
+index 19bca20..6b1aeec 100644
 --- a/node_modules/react-native-paper-dropdown/dist/DropDown.js
 +++ b/node_modules/react-native-paper-dropdown/dist/DropDown.js
-@@ -54,7 +54,7 @@ const DropDown = forwardRef((props, ref) => {
+@@ -52,9 +52,9 @@ const DropDown = forwardRef((props, ref) => {
+             setValue(currentValue);
+         }
      }, [value]);
-     return (<Menu visible={visible} onDismiss={onDismiss} theme={theme} anchor={<TouchableRipple ref={ref} onPress={showDropDown} onLayout={onLayout} accessibilityLabel={accessibilityLabel}>
-             <View pointerEvents={"none"}>
+-    return (<Menu visible={visible} onDismiss={onDismiss} theme={theme} anchor={<TouchableRipple ref={ref} onPress={showDropDown} onLayout={onLayout} accessibilityLabel={accessibilityLabel}>
+-            <View pointerEvents={"none"}>
 -              <TextInput value={displayValue} mode={mode} label={label} placeholder={placeholder} pointerEvents={"none"} theme={theme} right={<TextInput.Icon name={visible ? "menu-up" : "menu-down"}/>} {...inputProps}/>
-+              <TextInput value={displayValue} mode={mode} label={label} placeholder={placeholder} pointerEvents={"none"} theme={theme} right={<TextInput.Icon name={visible ? "menu-up" : "menu-down"} color={inputProps.disabled ? (theme || activeTheme).colors.placeholder : (theme || activeTheme).colors.text}/>} {...inputProps}/>
++    return (<Menu visible={visible} onDismiss={onDismiss} theme={theme} anchor={<TouchableRipple ref={ref} onPress={showDropDown} onLayout={onLayout} accessibilityLabel={accessibilityLabel} {...props.touchableProps}>
++            <View pointerEvents={"none"} {...props.viewProps}>
++              <TextInput value={displayValue} mode={mode} label={label} placeholder={placeholder} pointerEvents={"none"} theme={theme} right={<TextInput.Icon name={visible ? "menu-up" : "menu-down"} {...props.iconProps}/>} {...inputProps}/>
              </View>
            </TouchableRipple>} style={{
              maxWidth: inputLayout?.width,
