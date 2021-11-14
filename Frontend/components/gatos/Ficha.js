@@ -163,28 +163,30 @@ export default function Ficha(props) {
                     {removeResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
                 </Snackbar>
             )}
-            <Portal>
-                <Dialog style={styles.modal} visible={removeVisible} onDismiss={onDismissRemove}>
-                    <View>
-                        <Dialog.Title>
-                            Remover{gato ? ` ${gato.nome}` : ''}?
-                        </Dialog.Title>
-                        <Dialog.Content>
-                            <Paragraph>
-                                Esta operação não pode ser desfeita.
-                            </Paragraph>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button onPress={onDismissRemove}>
-                                Cancelar
-                            </Button>
-                            <Button onPress={onConfirmRemove}>
-                                Ok
-                            </Button>
-                        </Dialog.Actions>
-                    </View>
-                </Dialog>
-            </Portal>
+            {gato && (
+                <Portal>
+                    <Dialog visible={removeVisible} onDismiss={onDismissRemove}>
+                        <View>
+                            <Dialog.Title>
+                                {`Remover ${gato.nome}?`}
+                            </Dialog.Title>
+                            <Dialog.Content>
+                                <Paragraph>
+                                    Esta operação não pode ser desfeita.
+                                </Paragraph>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button onPress={onDismissRemove}>
+                                    Cancelar
+                                </Button>
+                                <Button onPress={onConfirmRemove}>
+                                    Ok
+                                </Button>
+                            </Dialog.Actions>
+                        </View>
+                    </Dialog>
+                </Portal>
+            )}
         </>
     );
 }

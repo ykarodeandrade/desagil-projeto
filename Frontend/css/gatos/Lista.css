@@ -2,7 +2,6 @@ container {
     flex-grow: 1;
     flex-direction: row;
     flex-wrap: wrap;
-    align-content: flex-start;
     padding: 5px;
 }
 

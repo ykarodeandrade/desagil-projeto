@@ -53,18 +53,18 @@ export default function Lista(props) {
                 </View>
             ) : (
                 response.success ? (
-                    response.body !== null && response.body.length > 0 ? (
-                        <ScrollView>
-                            <SafeAreaView style={styles.container}>
-                                {map(response.body, (gato) => <CatCard navigation={navigation} gato={gato} />)}
-                            </SafeAreaView>
-                        </ScrollView>
-                    ) : (
+                    response.body === null || response.body.length === 0 ? (
                         <View style={styles.center}>
                             <Text>
                                 Nenhum gato cadastrado
                             </Text>
                         </View>
+                    ) : (
+                        <ScrollView>
+                            <SafeAreaView style={styles.container}>
+                                {map(response.body, (gato) => <CatCard navigation={navigation} gato={gato} />)}
+                            </SafeAreaView>
+                        </ScrollView>
                     )
                 ) : (
                     <View style={styles.center}>
