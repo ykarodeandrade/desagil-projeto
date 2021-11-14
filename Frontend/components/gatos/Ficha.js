@@ -39,7 +39,7 @@ export default function Ficha(props) {
     useEffect(() => {
         if ((registerResponse.success && registerResponse.body !== null) || (removeResponse.success && removeResponse.body !== null)) {
             emit();
-            navigation.navigate('Lista');
+            navigation.navigate('ListaGatos');
         } else {
             navigation.setOptions({ title: gato ? gato.nome : 'Novo gato' });
         }

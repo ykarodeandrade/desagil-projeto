@@ -17,7 +17,7 @@ export default function Main(props) {
     const theme = useTheme();
 
     return (
-        <Tab.Navigator initialRouteName="Gatos" screenOptions={theme.screenOptions}>
+        <Tab.Navigator initialRouteName="Doadores" screenOptions={theme.screenOptions}>
             <Tab.Screen name="Gatos" component={Gatos} options={{ tabBarIcon: ({ color }) => <Icon name="cat" color={color} /> }} />
             <Tab.Screen name="Doadores" component={Doadores} options={{ tabBarIcon: ({ color }) => <Icon name="charity" color={color} /> }} />
         </Tab.Navigator>

@@ -16,7 +16,7 @@ function CatCard(props) {
     const { navigation, gato } = props;
     return (
         <View style={styles.cell}>
-            <Card style={styles.card} onPress={() => navigation.navigate('Ficha', gato)}>
+            <Card style={styles.card} onPress={() => navigation.navigate('FichaGato', gato)}>
                 <Card.Title title={gato.nome} />
                 <AspectView>
                     {gato.foto ? (
@@ -74,7 +74,7 @@ export default function Lista(props) {
                     </View>
                 )
             )}
-            <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('Ficha', null)} />
+            <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('FichaGato', null)} />
             {!response.running && !response.success && (
                 <Snackbar visible={getError} action={{ label: 'Ok', onPress: () => setGetError(false) }} onDismiss={() => { }}>
                     {response.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${response.body.status}: ${response.body.message}`}

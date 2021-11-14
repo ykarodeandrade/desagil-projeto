@@ -15,9 +15,9 @@ export default function Main(props) {
     const theme = useTheme();
 
     return (
-        <Stack.Navigator initialRouteName="Lista" screenOptions={theme.screenOptions}>
-            <Stack.Screen name="Lista" component={Lista} options={{ headerShown: false }} />
-            <Stack.Screen name="Ficha" component={Ficha} />
+        <Stack.Navigator initialRouteName="ListaGatos" screenOptions={theme.screenOptions}>
+            <Stack.Screen name="ListaGatos" component={Lista} options={{ headerShown: false }} />
+            <Stack.Screen name="FichaGato" component={Ficha} />
         </Stack.Navigator>
     );
 }
