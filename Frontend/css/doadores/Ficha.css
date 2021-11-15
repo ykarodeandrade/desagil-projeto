@@ -8,13 +8,24 @@ photoOuter {
     width: 50%;
 }
 
-photoInner {
+photoSurface {
     flex-grow: 1;
     margin: 5px;
+    border-width: 1px;
+    border-radius: 50%;
+}
+
+photoInner {
+    flex-grow: 1;
+}
+
+icon {
+    margin: 10px;
 }
 
 photo {
     flex-grow: 1;
+    border-radius: 50%;
 }
 
 input {

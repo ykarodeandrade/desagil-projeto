@@ -19,8 +19,10 @@ export default function Ficha(props) {
 
     const [photoError, setPhotoError] = useState(false);
     const [name, setName] = useState(gato ? gato.nome : '');
+    const [nameError, setNameError] = useState(true);
     const [gender, setGender] = useState(gato ? gato.genero : 'FEMEA');
     const [breed, setBreed] = useState(gato ? gato.raca : '');
+    const [breedError, setBreedError] = useState(true);
     const [fur, setFur] = useState(gato ? gato.pelagem : 'AUSENTE');
     const [eye, setEye] = useState(gato ? gato.olhos : 'VERDES');
     const [birthDate, setBirthDate] = useState(gato ? new Date(gato.dataNascimento) : new Date());
@@ -36,18 +38,19 @@ export default function Ficha(props) {
     const { post, put, response: registerResponse } = useRequest(settings.url);
     const { del, response: removeResponse } = useRequest(settings.url);
 
-    useEffect(() => {
-        if ((registerResponse.success && registerResponse.body !== null) || (removeResponse.success && removeResponse.body !== null)) {
-            emit();
-            navigation.navigate('ListaGatos');
-        } else {
-            navigation.setOptions({ title: gato ? gato.nome : 'Novo gato' });
-        }
-    }, [registerResponse, removeResponse]);
-
     function onPressPhoto() {
         setPhotoError(true);
         pick('image/*', true);
+    }
+
+    function onChangeTextName(text) {
+        setName(text);
+        setNameError(!text.trim());
+    }
+
+    function onChangeTextBreed(text) {
+        setBreed(text);
+        setBreedError(!text.trim());
     }
 
     function onPressRegister() {
@@ -80,14 +83,19 @@ export default function Ficha(props) {
         del(`/gato?key=${gato.key}`);
     }
 
-    const nameError = name.trim() === '';
+    useEffect(() => {
+        if ((registerResponse.success && registerResponse.body !== null) || (removeResponse.success && removeResponse.body !== null)) {
+            emit();
+            navigation.navigate('ListaGatos');
+        } else {
+            navigation.setOptions({ title: gato ? gato.nome : 'Novo gato' });
+        }
+    }, [registerResponse, removeResponse]);
 
     const genders = [
         { label: 'Fêmea', value: 'FEMEA' },
         { label: 'Macho', value: 'MACHO' },
     ];
-
-    const breedError = breed.trim() === '';
 
     const furs = [
         { label: 'Ausente', value: 'AUSENTE' },
@@ -119,14 +127,14 @@ export default function Ficha(props) {
                             </TouchableRipple>
                         )}
                     </AspectView>
-                    <TextInput style={styles.input} label="Nome" value={name} error={nameError} onChangeText={setName} />
+                    <TextInput style={styles.input} label="Nome" value={name} error={nameError} onChangeText={onChangeTextName} />
                     {nameError && (
                         <HelperText style={styles.error} type="error">
                             Nome é obrigatório
                         </HelperText>
                     )}
                     <DropDown style={styles.input} label="Gênero" list={genders} value={gender} setValue={setGender} />
-                    <TextInput style={styles.input} label="Raça" value={breed} error={breedError} onChangeText={setBreed} />
+                    <TextInput style={styles.input} label="Raça" value={breed} error={breedError} onChangeText={onChangeTextBreed} />
                     {breedError && (
                         <HelperText style={styles.error} type="error">
                             Raça é obrigatória
@@ -150,17 +158,17 @@ export default function Ficha(props) {
             </ScrollView>
             {!file.loading && !file.valid && (
                 <Snackbar visible={photoError} action={{ label: 'Ok', onPress: () => setPhotoError(false) }} onDismiss={() => { }}>
-                    Não foi possível carregar.
+                    Não foi possível carregar a foto.
                 </Snackbar>
             )}
             {!registerResponse.running && !registerResponse.success && (
                 <Snackbar visible={registerError} action={{ label: 'Ok', onPress: () => setRegisterError(false) }} onDismiss={() => { }}>
-                    {registerResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${registerResponse.body.status}: ${registerResponse.body.message}`}
+                    {registerResponse.body.status === 0 ? 'Não foi possível conectar ao servidor' : `ERROR ${registerResponse.body.status}: ${registerResponse.body.message}`}
                 </Snackbar>
             )}
             {!removeResponse.running && !removeResponse.success && (
                 <Snackbar visible={removeError} action={{ label: 'Ok', onPress: () => setRemoveError(false) }} onDismiss={() => { }}>
-                    {removeResponse.body.status === 0 ? 'Não foi possível conectar' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
+                    {removeResponse.body.status === 0 ? 'Não foi possível conectar ao servidor' : `ERROR ${removeResponse.body.status}: ${removeResponse.body.message}`}
                 </Snackbar>
             )}
             {gato && (
