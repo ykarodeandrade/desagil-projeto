@@ -12,7 +12,7 @@ export default function useRequest(baseUrl) {
     function request(method, uri, body) {
         setState({
             running: true,
-            success: false,
+            success: state.success,
             body: state.body,
         });
 
@@ -71,13 +71,12 @@ export default function useRequest(baseUrl) {
                         });
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 setState({
                     running: false,
                     success: false,
                     body: {
                         status: 0,
-                        error: error,
                     },
                 });
             });
