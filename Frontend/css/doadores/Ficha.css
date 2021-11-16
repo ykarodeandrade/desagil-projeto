@@ -3,7 +3,14 @@ container {
     padding: 5px;
 }
 
-photoOuter {
+preview {
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+}
+
+photoAspect {
     align-self: center;
     width: 50%;
 }
@@ -12,20 +19,18 @@ photoSurface {
     flex-grow: 1;
     margin: 5px;
     border-width: 1px;
-    border-radius: 50%;
 }
 
-photoInner {
+photoContainer {
     flex-grow: 1;
 }
 
-icon {
+photoIcon {
     margin: 10px;
 }
 
-photo {
+photoImage {
     flex-grow: 1;
-    border-radius: 50%;
 }
 
 input {

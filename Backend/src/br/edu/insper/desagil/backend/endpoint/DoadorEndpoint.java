@@ -18,7 +18,7 @@ public class DoadorEndpoint extends Endpoint<Doador> {
 
 	@Override
 	public Doador get(Args args) {
-		String key = args.get("key");
+		String key = args.get("cpf");
 		return dao.retrieve(key);
 	}
 
@@ -41,7 +41,7 @@ public class DoadorEndpoint extends Endpoint<Doador> {
 
 	@Override
 	public Result delete(Args args) {
-		String key = args.get("key");
+		String key = args.get("cpf");
 		dao.delete(key);
 		return new Result();
 	}

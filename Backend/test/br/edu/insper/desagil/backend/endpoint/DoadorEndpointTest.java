@@ -23,7 +23,7 @@ class DoadorEndpointTest extends EndpointTest<Doador> {
 		doador = new Doador();
 		doador.setCpf("12345678910");
 		post(doador);
-		doador = get("key=12345678910");
+		doador = get("cpf=12345678910");
 		assertEquals("12345678910", doador.getCpf());
 	}
 

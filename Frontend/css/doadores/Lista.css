@@ -2,6 +2,36 @@ container {
     flex-grow: 1;
 }
 
+center {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+itemContainer {
+    padding: 5px;
+}
+
+item {
+    flex-direction: row;
+    align-items: center;
+}
+
+photoContainer {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+photo {
+    flex-grow: 1;
+}
+
+name {
+    flex-grow: 1;
+    margin: 5px;
+}
+
 fab {
     position: absolute;
     right: 10px;

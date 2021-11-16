@@ -40,7 +40,7 @@ export default function Ficha(props) {
 
     function onPressPhoto() {
         setPhotoError(true);
-        pick('image/*', true);
+        pick('image/*');
     }
 
     function onChangeTextName(text) {
