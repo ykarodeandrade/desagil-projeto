@@ -19,10 +19,10 @@ export default function Ficha(props) {
 
     const [photoError, setPhotoError] = useState(false);
     const [name, setName] = useState(gato ? gato.nome : '');
-    const [nameError, setNameError] = useState(true);
+    const [nameError, setNameError] = useState(typeof name !== 'string' || !name.trim());
     const [gender, setGender] = useState(gato ? gato.genero : 'FEMEA');
     const [breed, setBreed] = useState(gato ? gato.raca : '');
-    const [breedError, setBreedError] = useState(true);
+    const [breedError, setBreedError] = useState(typeof breed !== 'string' || !breed.trim());
     const [fur, setFur] = useState(gato ? gato.pelagem : 'AUSENTE');
     const [eye, setEye] = useState(gato ? gato.olhos : 'VERDES');
     const [birthDate, setBirthDate] = useState(gato ? new Date(gato.dataNascimento) : new Date());

@@ -19,9 +19,9 @@ export default function Ficha(props) {
 
     const [photoError, setPhotoError] = useState(false);
     const [name, setName] = useState(doador ? doador.nome : '');
-    const [nameError, setNameError] = useState(!name.trim());
-    const [cpf, setCpf] = useState(doador ? doador.nome : '');
-    const [cpfError, setCpfError] = useState(!cpf.trim());
+    const [nameError, setNameError] = useState(typeof name !== 'string' || !name.trim());
+    const [cpf, setCpf] = useState(doador ? doador.cpf : '');
+    const [cpfError, setCpfError] = useState(typeof cpf !== 'string' || !cpf.trim());
     const [registerError, setRegisterError] = useState(false);
     const [removeError, setRemoveError] = useState(false);
     const [removeVisible, setRemoveVisible] = useState(false);
@@ -40,7 +40,6 @@ export default function Ficha(props) {
     function onPressPreview() {
         setPhotoError(true);
         camera.take();
-        camera.deactivate();
     }
 
     function onChangeTextCpf(text) {
@@ -92,7 +91,7 @@ export default function Ficha(props) {
             {camera.active ? (
                 <Portal>
                     <Preview style={styles.preview}>
-                        {photo.saving ? (
+                        {photo.taking ? (
                             <ActivityIndicator size="large" />
                         ) : (
                             <FAB icon="camera" onPress={onPressPreview} />
@@ -105,13 +104,17 @@ export default function Ficha(props) {
                         <AspectView style={styles.photoAspect}>
                             <Rounded>
                                 <Surface style={styles.photoSurface}>
-                                    <TouchableRipple style={styles.photoContainer} onPress={onPressPhoto}>
-                                        {photo.uri === null ? (
-                                            <Icon style={styles.photoIcon} name="camera" />
-                                        ) : (
-                                            <Image style={styles.photoImage} source={{ uri: photo.uri }} resizeMode="stretch" />
-                                        )}
-                                    </TouchableRipple>
+                                    {photo.saving ? (
+                                        <ActivityIndicator style={styles.photoContainer} size="large" />
+                                    ) : (
+                                        <TouchableRipple style={styles.photoContainer} onPress={onPressPhoto}>
+                                            {photo.uri === null ? (
+                                                <Icon style={styles.photoIcon} name="camera" />
+                                            ) : (
+                                                <Image style={styles.photoImage} source={{ uri: photo.uri }} resizeMode="stretch" />
+                                            )}
+                                        </TouchableRipple>
+                                    )}
                                 </Surface>
                             </Rounded>
                         </AspectView>
