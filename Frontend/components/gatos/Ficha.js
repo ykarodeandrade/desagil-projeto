@@ -19,10 +19,10 @@ export default function Ficha(props) {
 
     const [photoError, setPhotoError] = useState(false);
     const [name, setName] = useState(gato ? gato.nome : '');
-    const [nameError, setNameError] = useState(typeof name !== 'string' || !name.trim());
+    const [nameError, setNameError] = useState(typeof name !== 'string' || nameInvalid(name));
     const [gender, setGender] = useState(gato ? gato.genero : 'FEMEA');
     const [breed, setBreed] = useState(gato ? gato.raca : '');
-    const [breedError, setBreedError] = useState(typeof breed !== 'string' || !breed.trim());
+    const [breedError, setBreedError] = useState(typeof breed !== 'string' || breedInvalid(breed));
     const [fur, setFur] = useState(gato ? gato.pelagem : 'AUSENTE');
     const [eye, setEye] = useState(gato ? gato.olhos : 'VERDES');
     const [birthDate, setBirthDate] = useState(gato ? new Date(gato.dataNascimento) : new Date());
@@ -38,6 +38,14 @@ export default function Ficha(props) {
     const { post, put, response: registerResponse } = useRequest(settings.url);
     const { del, response: removeResponse } = useRequest(settings.url);
 
+    function nameInvalid(name) {
+        return !name.trim();
+    }
+
+    function breedInvalid(breed) {
+        return !breed.trim();
+    }
+
     function onPressPhoto() {
         setPhotoError(true);
         pick('image/*');
@@ -45,12 +53,12 @@ export default function Ficha(props) {
 
     function onChangeTextName(text) {
         setName(text);
-        setNameError(!text.trim());
+        setNameError(nameInvalid(text));
     }
 
     function onChangeTextBreed(text) {
         setBreed(text);
-        setBreedError(!text.trim());
+        setBreedError(breedInvalid(text));
     }
 
     function onPressRegister() {

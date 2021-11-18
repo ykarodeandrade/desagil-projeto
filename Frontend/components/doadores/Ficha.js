@@ -18,10 +18,10 @@ export default function Ficha(props) {
     const doador = route.params;
 
     const [photoError, setPhotoError] = useState(false);
-    const [name, setName] = useState(doador ? doador.nome : '');
-    const [nameError, setNameError] = useState(typeof name !== 'string' || !name.trim());
     const [cpf, setCpf] = useState(doador ? doador.cpf : '');
-    const [cpfError, setCpfError] = useState(typeof cpf !== 'string' || !cpf.trim());
+    const [cpfError, setCpfError] = useState(typeof cpf !== 'string' || cpfInvalid(cpf));
+    const [name, setName] = useState(doador ? doador.nome : '');
+    const [nameError, setNameError] = useState(typeof name !== 'string' || nameInvalid(name));
     const [registerError, setRegisterError] = useState(false);
     const [removeError, setRemoveError] = useState(false);
     const [removeVisible, setRemoveVisible] = useState(false);
@@ -32,6 +32,14 @@ export default function Ficha(props) {
 
     const { post, put, response: registerResponse } = useRequest(settings.url);
     const { del, response: removeResponse } = useRequest(settings.url);
+
+    function cpfInvalid(cpf) {
+        return !cpf.trim();
+    }
+
+    function nameInvalid(name) {
+        return !name.trim();
+    }
 
     function onPressPhoto() {
         camera.activate();
@@ -44,12 +52,12 @@ export default function Ficha(props) {
 
     function onChangeTextCpf(text) {
         setCpf(text);
-        setCpfError(!text.trim());
+        setCpfError(cpfInvalid(text));
     }
 
     function onChangeTextName(text) {
         setName(text);
-        setNameError(!text.trim());
+        setNameError(nameInvalid(text));
     }
 
     function onPressRegister() {
