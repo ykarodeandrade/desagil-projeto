@@ -5,7 +5,10 @@ import React, { useRef, useState } from 'react';
 import { Platform } from 'react-native';
 
 import * as FileSystem from 'expo-file-system';
+import { manipulateAsync } from 'expo-image-manipulator';
 import { Camera } from 'expo-camera';
+
+const MAX_SIZE = 640;
 
 export default function useCamera(uri) {
     const ref = useRef();
@@ -44,32 +47,65 @@ export default function useCamera(uri) {
         }
     }
 
-    function doTake(keepActive) {
-        ref.current.takePictureAsync()
-            .then((result) => {
+    function encode(uri) {
+        FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
+            .then((data) => {
+                setPhoto({
+                    taking: false,
+                    saving: false,
+                    valid: true,
+                    uri: `data:image/jpg;base64,${data}`,
+                });
+            });
+    }
+
+    function resize(input) {
+        let width;
+        let height;
+        if (input.width < input.height) {
+            height = MAX_SIZE;
+            width = input.width * (height / input.height);
+        } else {
+            width = MAX_SIZE;
+            height = input.height * (width / input.width);
+        }
+        manipulateAsync(input.uri, [{ resize: { width, height } }])
+            .then((output) => {
                 if (Platform.OS === 'web') {
                     setPhoto({
                         taking: false,
                         saving: false,
                         valid: true,
-                        uri: result.uri,
+                        uri: output.uri,
                     });
                 } else {
-                    setPhoto({
-                        taking: false,
-                        saving: true,
-                        valid: photo.valid,
-                        uri: photo.uri,
-                    });
-                    FileSystem.readAsStringAsync(result.uri, { encoding: FileSystem.EncodingType.Base64 })
-                        .then((data) => {
-                            setPhoto({
-                                taking: false,
-                                saving: false,
-                                valid: true,
-                                uri: `data:image/jpg;base64,${data}`,
-                            });
+                    encode(output.uri);
+                }
+            });
+    }
+
+    function doTake(keepActive) {
+        ref.current.takePictureAsync()
+            .then((result) => {
+                setPhoto({
+                    taking: false,
+                    saving: true,
+                    valid: photo.valid,
+                    uri: photo.uri,
+                });
+                if (result.width <= MAX_SIZE && result.height <= MAX_SIZE) {
+                    if (Platform.OS === 'web') {
+                        setPhoto({
+                            taking: false,
+                            saving: false,
+                            valid: true,
+                            uri: result.uri,
                         });
+                    } else {
+                        encode(result.uri);
+                    }
+                } else {
+                    resize(result);
                 }
                 setActive(keepActive);
             })
