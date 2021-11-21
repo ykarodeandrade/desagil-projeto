@@ -12,7 +12,7 @@ import * as FileSystem from 'expo-file-system';
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as DocumentPicker from 'expo-document-picker';
 
-const MAX_SIZE = 640;
+const MAX_SIZE = 512;
 
 function getImageSizeAsync(uri) {
     return new Promise((resolve, reject) => {
@@ -40,26 +40,26 @@ export default function useStorage(uri) {
             });
     }
 
-    function resize(input, inputWidth, inputHeight) {
+    function resize(result, resultWidth, resultHeight) {
         let width;
         let height;
-        if (inputWidth < inputHeight) {
+        if (resultWidth < resultHeight) {
             height = MAX_SIZE;
-            width = inputWidth * (height / inputHeight);
+            width = resultWidth * (height / resultHeight);
         } else {
             width = MAX_SIZE;
-            height = inputHeight * (width / inputWidth);
+            height = resultHeight * (width / resultWidth);
         }
-        manipulateAsync(input.uri, [{ resize: { width, height } }])
-            .then((output) => {
+        manipulateAsync(result.uri, [{ resize: { width, height } }])
+            .then((resized) => {
                 if (Platform.OS === 'web') {
                     setFile({
                         loading: false,
                         valid: true,
-                        uri: output.uri,
+                        uri: resized.uri,
                     });
                 } else {
-                    encode(output.uri, 'image/jpeg');
+                    encode(resized.uri, 'image/jpeg');
                 }
             });
     }
