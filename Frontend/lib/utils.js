@@ -3,7 +3,7 @@
 import React, { Fragment } from 'react';
 
 function map(items, callback) {
-    return items.map((item, key) => <Fragment key={key}>{callback(item)}</Fragment>);
+    return items.map((item, key) => <Fragment key={key}>{callback(item, key)}</Fragment>);
 }
 
 export { map };
