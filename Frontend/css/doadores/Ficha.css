@@ -41,6 +41,33 @@ error {
     margin: 0 5px 5px 5px;
 }
 
+list {
+    margin: 5px;
+    padding: 0;
+}
+
+listIndicator {
+    margin: 0 5px 5px 5px;
+}
+
+listItem {
+    margin: 0 5px 5px 5px;
+    padding: 0;
+}
+
+listIcon {
+    margin: 0;
+}
+
+listButton {
+    align-self: center;
+    margin: 0 5px 5px 5px;
+}
+
+catItem {
+    padding: 10px;
+}
+
 buttonContainer {
     flex-direction: row;
 }

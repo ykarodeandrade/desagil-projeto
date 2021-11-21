@@ -24,6 +24,14 @@ public class GatoEndpoint extends Endpoint<Gato> {
 
 	@Override
 	public List<Gato> getList(Args args) {
+		if (args.containsKey("keys")) {
+			List<String> keys = args.getList("keys", ",");
+			if (args.containsKey("other") && args.getBoolean("other")) {
+				return dao.retrieveExcept(keys);
+			} else {
+				return dao.retrieve(keys);
+			}
+		}
 		return dao.retrieveAll();
 	}
 
