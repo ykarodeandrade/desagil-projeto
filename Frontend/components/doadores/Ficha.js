@@ -42,7 +42,7 @@ export default function Ficha(props) {
 
     const emit = useEmit('updated-donors');
 
-    const { camera, photo, Preview } = useCamera(doador ? doador.foto : null);
+    const { camera, photo, Preview } = useCamera(doador ? doador.foto : null, true);
 
     const { post, put, response: registerResponse } = useRequest(settings.url);
     const { del, response: removeResponse } = useRequest(settings.url);
