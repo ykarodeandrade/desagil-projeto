@@ -1,5 +1,14 @@
 container {
     flex-grow: 1;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+preview {
+    flex-grow: 1;
+}
+
+input {
+    margin: 5px;
 }
