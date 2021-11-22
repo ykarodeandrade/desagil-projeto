@@ -66,7 +66,6 @@ export default function useScanner() {
 
     return {
         scanner: {
-            allowed: scanner.allowed,
             active: scanner.active,
             broken: scanner.broken,
             error: scanner.error,
