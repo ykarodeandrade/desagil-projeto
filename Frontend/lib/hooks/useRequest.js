@@ -71,12 +71,13 @@ export default function useRequest(baseUrl) {
                         });
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 setState({
                     running: false,
                     success: false,
                     body: {
                         status: 0,
+                        message: error,
                     },
                 });
             });

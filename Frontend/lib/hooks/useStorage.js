@@ -27,6 +27,7 @@ export default function useStorage(uri) {
         loading: false,
         valid: true,
         uri: uri,
+        error: null,
     });
 
     function encode(uri, type) {
@@ -36,6 +37,7 @@ export default function useStorage(uri) {
                     loading: false,
                     valid: true,
                     uri: `data:${type};base64,${data}`,
+                    error: file.error,
                 });
             });
     }
@@ -57,6 +59,7 @@ export default function useStorage(uri) {
                         loading: false,
                         valid: true,
                         uri: resized.uri,
+                        error: file.error,
                     });
                 } else {
                     encode(resized.uri, 'image/jpeg');
@@ -69,6 +72,7 @@ export default function useStorage(uri) {
             loading: true,
             valid: file.valid,
             uri: file.uri,
+            error: file.error,
         });
         DocumentPicker.getDocumentAsync({ type: type, copyToCacheDirectory: false })
             .then((result) => {
@@ -77,6 +81,7 @@ export default function useStorage(uri) {
                         loading: false,
                         valid: true,
                         uri: file.uri,
+                        error: file.error,
                     });
                 } else {
                     getImageSizeAsync(result.uri)
@@ -87,6 +92,7 @@ export default function useStorage(uri) {
                                         loading: false,
                                         valid: true,
                                         uri: result.uri,
+                                        error: file.error,
                                     });
                                 } else {
                                     const tempUri = `${FileSystem.cacheDirectory}${nanoid()}`;
@@ -101,11 +107,12 @@ export default function useStorage(uri) {
                         });
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 setFile({
                     loading: false,
                     valid: false,
                     uri: file.uri,
+                    error: error,
                 });
             });
     }

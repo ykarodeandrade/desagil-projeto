@@ -21,6 +21,7 @@ export default function useCamera(uri, square) {
         saving: false,
         valid: true,
         uri: uri,
+        error: null,
     });
 
     const [androidPadding, setAndroidPadding] = useState(0);
@@ -39,31 +40,54 @@ export default function useCamera(uri, square) {
                             setActive(true);
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         setPhoto({
                             taking: false,
                             saving: false,
                             valid: false,
                             uri: photo.uri,
+                            error: error,
                         });
                     });
             }
         }
     }
 
-    function encode(uri) {
-        FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
-            .then((data) => {
-                setPhoto({
-                    taking: false,
-                    saving: false,
-                    valid: true,
-                    uri: `data:image/jpg;base64,${data}`,
-                });
+    function encode(inputUri, onSuccess) {
+        if (Platform.OS === 'web') {
+            setPhoto({
+                taking: false,
+                saving: false,
+                valid: true,
+                uri: inputUri,
+                error: photo.error,
             });
+            if (onSuccess) {
+                onSuccess(inputUri);
+            } else {
+                setActive(false);
+            }
+        } else {
+            FileSystem.readAsStringAsync(inputUri, { encoding: FileSystem.EncodingType.Base64 })
+                .then((data) => {
+                    const outputUri = `data:image/jpg;base64,${data}`;
+                    setPhoto({
+                        taking: false,
+                        saving: false,
+                        valid: true,
+                        uri: outputUri,
+                        error: photo.error,
+                    });
+                    if (onSuccess) {
+                        onSuccess(outputUri);
+                    } else {
+                        setActive(false);
+                    }
+                });
+        }
     }
 
-    function resize(result) {
+    function resize(result, onSuccess) {
         let width;
         let height;
         if (result.width < result.height) {
@@ -75,37 +99,19 @@ export default function useCamera(uri, square) {
         }
         manipulateAsync(result.uri, [{ resize: { width, height } }])
             .then((resized) => {
-                if (Platform.OS === 'web') {
-                    setPhoto({
-                        taking: false,
-                        saving: false,
-                        valid: true,
-                        uri: resized.uri,
-                    });
-                } else {
-                    encode(resized.uri);
-                }
+                encode(resized.uri, onSuccess);
             });
     }
 
-    function encodeOrResize(result) {
+    function encodeOrResize(result, onSuccess) {
         if (result.width <= MAX_SIZE && result.height <= MAX_SIZE) {
-            if (Platform.OS === 'web') {
-                setPhoto({
-                    taking: false,
-                    saving: false,
-                    valid: true,
-                    uri: result.uri,
-                });
-            } else {
-                encode(result.uri);
-            }
+            encode(result.uri, onSuccess);
         } else {
-            resize(result);
+            resize(result, onSuccess);
         }
     }
 
-    function doTake(keepActive) {
+    function doTake(onSuccess, onFailure) {
         ref.current.takePictureAsync()
             .then((result) => {
                 setPhoto({
@@ -113,6 +119,7 @@ export default function useCamera(uri, square) {
                     saving: true,
                     valid: photo.valid,
                     uri: photo.uri,
+                    error: photo.error,
                 });
                 if (square) {
                     const crop = {};
@@ -129,37 +136,42 @@ export default function useCamera(uri, square) {
                     }
                     manipulateAsync(result.uri, [{ crop: crop }])
                         .then((cropped) => {
-                            encodeOrResize(cropped);
+                            encodeOrResize(cropped, onSuccess);
                         });
                 } else {
-                    encodeOrResize(result);
+                    encodeOrResize(result, onSuccess);
                 }
-                setActive(keepActive);
             })
-            .catch(() => {
+            .catch((error) => {
                 setPhoto({
                     taking: false,
                     saving: false,
                     valid: false,
                     uri: photo.uri,
+                    error: error,
                 });
-                setActive(keepActive);
+                if (onFailure) {
+                    onFailure(error);
+                } else {
+                    setActive(false);
+                }
             });
     }
 
-    function take(keepActive) {
+    function take(onSuccess, onFailure) {
         if (active && ref.current) {
             setPhoto({
                 taking: true,
                 saving: photo.saving,
                 valid: photo.valid,
                 uri: photo.uri,
+                error: photo.error,
             });
             if (first) {
                 setFirst(false);
                 ref.current.takePictureAsync();
             }
-            setTimeout(() => doTake(keepActive), 1000);
+            setTimeout(() => doTake(onSuccess, onFailure), 1000);
         }
     }
 
@@ -182,7 +194,7 @@ export default function useCamera(uri, square) {
     }
 
     function onCameraReady() {
-        if (Platform.OS === 'android' && ref.current) {
+        if (ref.current) {
             ref.current.getSupportedRatiosAsync()
                 .then((ratioStrings) => {
                     let windowRatio;
@@ -197,7 +209,7 @@ export default function useCamera(uri, square) {
                         const dimensions = ratioString.split(':');
                         const ratio = parseInt(dimensions[0]) / parseInt(dimensions[1]);
                         const distance = windowRatio - ratio;
-                        if (distance >= 0 && minimum > distance) {
+                        if (distance >= 0 && distance < minimum) {
                             minimum = distance;
                             bestRatio = ratio;
                         }
@@ -208,12 +220,13 @@ export default function useCamera(uri, square) {
                         setAndroidPadding((windowWidth - windowHeight * bestRatio) / 2);
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
                     setPhoto({
                         taking: false,
                         saving: false,
                         valid: false,
                         uri: photo.uri,
+                        error: error,
                     });
                     setActive(false);
                 });
@@ -276,7 +289,12 @@ export default function useCamera(uri, square) {
                             style={{
                                 flexGrow: 1,
                             }}
-                            onCameraReady={onCameraReady}
+                            onCameraReady={() => {
+                                onCameraReady();
+                                if (cameraProps.onCameraReady) {
+                                    cameraProps.onCameraReady();
+                                }
+                            }}
                         />
                         <View
                             style={{
