@@ -20,7 +20,12 @@ export default function useGPS(location) {
                     allowed: gps.allowed,
                     updating: false,
                     broken: false,
-                    location: location,
+                    location: {
+                        timestamp: location.timestamp,
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        accuracy: location.coords.accuracy,
+                    },
                     error: gps.error,
                 });
             });
