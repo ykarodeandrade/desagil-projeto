@@ -21,7 +21,7 @@ export default function useGPS(location) {
                     updating: false,
                     broken: false,
                     location: {
-                        timestamp: location.timestamp,
+                        timestamp: new Date(location.timestamp),
                         latitude: location.coords.latitude,
                         longitude: location.coords.longitude,
                         accuracy: location.coords.accuracy,
