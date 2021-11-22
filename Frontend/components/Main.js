@@ -25,9 +25,20 @@ export default function Main(props) {
                     <ActivityIndicator style={styles.input} size="small" />
                 ) : (
                     gps.location && (
-                        <Text style={styles.input}>
-                            {JSON.stringify(gps.location, null, 2)}
-                        </Text>
+                        <>
+                            <Text style={styles.input}>
+                                Datetime: {gps.location.datetime.toLocaleString()}
+                            </Text>
+                            <Text style={styles.input}>
+                                Latitude: {gps.location.latitude}
+                            </Text>
+                            <Text style={styles.input}>
+                                Longitude: {gps.location.longitude}
+                            </Text>
+                            <Text style={styles.input}>
+                                Altitude: {gps.location.altitude}
+                            </Text>
+                        </>
                     )
                 )}
                 <Button style={styles.input} onPress={onPress}>
