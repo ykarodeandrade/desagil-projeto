@@ -2,17 +2,14 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { Text } from 'react-native-paper';
-
-import { StatusBar } from 'expo-status-bar';
+import { AspectImage } from '../lib';
 
 import styles from '../styles/Main.json';
 
 export default function Main(props) {
     return (
         <View style={styles.container}>
-            <Text>Abra Main.js para começar a trabalhar no seu app!</Text>
-            <StatusBar style="auto" />
+            <AspectImage style={styles.image} basis="width" source={require('../img/1.jpg')} />
         </View>
     );
 }
