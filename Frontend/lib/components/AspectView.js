@@ -18,7 +18,7 @@ function WebAspectView(props) {
         }
     }
 
-    const style = {};
+    const style = { ...props.style };
     if (props.basis === 'height') {
         style.width = basis * props.ratio;
     } else {
@@ -28,10 +28,7 @@ function WebAspectView(props) {
     return (
         <View
             {...props}
-            style={{
-                ...props.style,
-                ...style,
-            }}
+            style={style}
             onLayout={onLayout}
         >
             {props.children}
